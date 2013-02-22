@@ -1,0 +1,21 @@
+<ul class="operation_list">
+	<% _.each(operations, function(operation){ %>
+		<li class="<%= operation.style %>">
+			<div class="btn-group">
+				<a target="<%= operation.target %>" class="operation"><i class="<%= operation.icon %>"></i><%= operation.text %></a>
+				<% if(operation.dropdown) { %>
+					<a class="btn dropdown-toggle caret" data-toggle="dropdown">
+				    	<span></span>
+				  	</a>
+				  	<% if(_.isArray(operation.dropdown)) { %>
+				  		<ul class="dropdown-menu">
+					  		<% _.each(operation.dropdown, function(item){ %>
+					  			<li><%= item.text %></li>
+					  		<% }); %>
+	  					</ul>
+	  				<% } %>
+		  	<% } %>
+		  	</div>
+		</li>
+	<% }); %>
+</ul>

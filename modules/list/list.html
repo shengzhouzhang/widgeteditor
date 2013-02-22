@@ -1,0 +1,9 @@
+<ul class="item_list">
+	<% _.each(items, function(item){ %>
+		<li>
+			<a target="<%= item.target %>" >
+				<%= item.name %>
+			</a>
+		</li>
+	<% }); %>
+</ul>

@@ -1,0 +1,30 @@
+<div id="<%= modal.id %>" class="modal hide fade">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h3><%= modal.title %></h3>
+	</div>
+	<div class="modal-body">
+		<form class="form-horizontal">
+			<% _.each(modal.inputs, function(item){ %>
+				<div class="control-group">
+					<label class="control-label"><%= item.title %></label>
+						<div class="controls">
+							<input type="<%= item.type %>" id="<%= item.id %>" placeholder="<%= item.placeholder %>">
+						</div>
+				</div>
+			<% }); %>
+			<% _.each(modal.checklist, function(item){ %>
+				<div class="control-group">
+					<div class="controls">
+						<label class="checkbox">
+							<input type="checkbox"> <%= item %>
+						</label>
+					</div>
+				</div>
+			<% }); %>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<a href="#" class="btn btn-primary"><%= modal.action %></a>
+	</div>
+</div>

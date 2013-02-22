@@ -1,0 +1,28 @@
+<span>Ref: </span>
+<ul class="html">
+	<% _.each(html, function(item){ %>
+		<li>
+			<a href="<%= item.href %>" target="_blank">
+				<%= item.name %>
+			</a>
+		</li>
+	<% }); %>
+</ul>
+<ul class="javascript">
+	<% _.each(javascript, function(item){ %>
+		<li>
+			<a href="<%= item.href %>" target="_blank">
+				<%= item.name %>
+			</a>
+		</li>
+	<% }); %>
+</ul>
+<ul class="css">
+	<% _.each(css, function(item){ %>
+		<li>
+			<a href="<%= item.href %>" target="_blank">
+				<%= item.name %>
+			</a>
+		</li>
+	<% }); %>
+</ul>
