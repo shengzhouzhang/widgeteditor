@@ -21,6 +21,7 @@ require.config({
     operations: "operations/operations",
     ref: "ref/ref",
     widget: "widget/widget",
+    configuration: "configuration/configurations",
     modal: "modal/modal",
     persistence: "persistence_api/persistence_api",
     github: "github/github",

@@ -13,6 +13,7 @@ require([
 	"operations",
 	"ref",
 	"widget",
+	"configuration",
 	"modal",
 	"persistence",
 	
@@ -22,7 +23,7 @@ require([
 	"bootstrap"
 ],
 
-function(application, $, Backbone, SidePanel, Editor, JSConsole, List, Operations, Ref, Widget, Modal, Persistence, Rest) {
+function(application, $, Backbone, SidePanel, Editor, JSConsole, List, Operations, Ref, Widget, Configuration, Modal, Persistence, Rest) {
 	
 
 	var window_width = $("html").width();
@@ -91,7 +92,7 @@ function(application, $, Backbone, SidePanel, Editor, JSConsole, List, Operation
         {name: "Linkedin", target: "linkedin"}, 
         {name: "Google Map", target: "googlemap"}, 
         {name: "Google Plus", target: "googleplus"},
-        {name: "Others", target: "none"}
+        {name: "Others", target: "others"}
 	];
 	
 	serview_list_panel.render(function(view){
@@ -573,64 +574,65 @@ function(application, $, Backbone, SidePanel, Editor, JSConsole, List, Operation
 							switch_views(function(){
 							});
 						});
-
-						//save button event
-						if(widget.isNew()) {
-							var modal_data = {
-									id: "new_widget_modal",
-									title: "New Widget", 
-									inputs: [
-									         {title: "Widget Name", type: "text", id: "widgetname", placeholder: "widget's name"}
-									         ],
-//									checklist: ["Apply Backbone Template", "Apply AngularJS Template"],
-									action: "Create"
-							};
-							var modal = new Modal.View({
-								el: $("#new_widget_modal_container"),
-								model: new Modal.Model({
-									modal: modal_data
-								})
-							});
+						
+						
+						
+						// new widget infor
+						
+						var modal_data = {
+								id: "new_widget_modal",
+								title: "New Widget", 
+								inputs: [
+								         {title: "Widget Name", type: "text", id: "widgetname", placeholder: "widget's name"}
+								         ],
+								action: "Create"
+						};
+						var modal = new Modal.View({
+							el: $("#new_widget_modal_container"),
+							model: new Modal.Model({
+								modal: modal_data
+							})
+						});
+						
+						
+						modal.render(function(view){
 							
-							
-							modal.render(function(view){
+							$(view.el).find("a").click(function(){
 								
-								$(view.el).find("a").click(function(){
-									
-									var creator_name = "test-user-1";
-									var widget_name = $(modal.el).find('input[type="text"]').first().val();
-									
-									var files = JSON.stringify({
-										html: html_editor.ace.getValue(),
-						    			javascript: javascript_editor.ace.getValue(),
-						    			css: css_editor.ace.getValue(),
-						    			container: container_ace_editor.ace.getValue(),
-						        	});
-									
-									var service_name = $(serview_list_panel.el).find("a.actived").first().attr("target");
-									
-									widget.set("creator_name", creator_name);
-									widget.set("widget_name", widget_name);
-									widget.set("files", files);
-									widget.set("service_name", service_name);
-									
-									widget.save(function() {
-										jsconsole.logging("saved", "success");
-									});
-									
-									$("#new_widget_modal").modal('hide');
+								var creator_name = "servicebus";
+								var widget_name = $(modal.el).find('input[type="text"]').first().val();
+								
+								var files = JSON.stringify({
+									html: html_editor.ace.getValue(),
+					    			javascript: javascript_editor.ace.getValue(),
+					    			css: css_editor.ace.getValue(),
+					    			container: container_ace_editor.ace.getValue(),
+					        	});
+								
+								var service_name = $(serview_list_panel.el).find("a.actived").first().attr("target");
+								
+								widget.set("creator_name", creator_name);
+								widget.set("widget_name", widget_name);
+								widget.set("files", files);
+								widget.set("service_name", service_name);
+								widget.set("configurations", Configuration);
+								
+								widget.save(function() {
+									jsconsole.logging("saved", "success");
 								});
+								
+								$("#new_widget_modal").modal('hide');
 							});
+						});
+						
+						// save button event
+						$(view.el).find('a[target="save"]').unbind('click').click(function(){
 							
-							$(view.el).find('a[target="save"]').click(function(){
+							if(widget.isNew()) {
 								$("#new_widget_modal").modal({
 									backdrop: true
 								});
-							});
-						}else {
-							
-							$(view.el).find('a[target="save"]').click(function(){
-								
+							}else {
 								var files = JSON.stringify({
 									html: html_editor.ace.getValue(),
 					    			javascript: javascript_editor.ace.getValue(),
@@ -643,8 +645,8 @@ function(application, $, Backbone, SidePanel, Editor, JSConsole, List, Operation
 								widget.save(function() {
 									jsconsole.logging("saved", "success");
 								});
-							});
-						}
+							}
+						});
 						
 						// run button event
 						$('#widget_preview_container div.operations a[target="run"]').click(function(){

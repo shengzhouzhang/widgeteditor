@@ -12,13 +12,6 @@ define([
 function($, Backbone, Github, Rest) {
 	
 	var Persistence = {};
-
-	// Persistence API for local storage
-	Persistence.local_storage = function() {
-		
-	};
-	
-	
 	
 	// Persistence API for remote service
 	Persistence.remote_storage = function() {
@@ -37,18 +30,23 @@ function($, Backbone, Github, Rest) {
 				creator_name : widget.get("creator_name"), 
 				widget_name: widget.get("widget_name"),
 				files: widget.get("files"),
-				service_name: widget.get("service_name")
+				service_name: widget.get("service_name"),
+				configurations: widget.get("configurations")
 			};
 			
 			var options = {
 				success: function(model, response) {
+					console.log('saved');
+					console.log(model);
+					console.log(response);
 					if(_.isFunction(done)) {
 						done(model);
 					};
 				},
 				error: function(model, response) {
-//					console.log(model);
-//					console.log(response);
+					console.log('error');
+					console.log(model);
+					console.log(response);
 					if(_.isFunction(done)) {
 						done(model);
 					};
