@@ -212,6 +212,7 @@ function(application, $, Backbone, SidePanel, Editor, JSConsole, List, Operation
 	function init_view(widget, done) {
 		
 		var files = widget.get("files");
+		var config = widget.get("configurations") || Configuration;
 
 		//render Preview
 		widget_preivew_panel.render(function(view){
@@ -275,10 +276,19 @@ function(application, $, Backbone, SidePanel, Editor, JSConsole, List, Operation
 				.parent().css("margin-left", 130);
 				$(view.el).find("label.checkbox").parent().css("margin-left", 130);
 				$(view.el).find("div.control-group").css("margin-bottom", 0);
+				if(typeof config.container_link !== "undefined")
+					$(view.el).find("input[type=text]").first().val(config.html_link);
+				if(config.load_from_container_link === true)
+					$(view.el).find("input[type=checkbox]").attr('checked', 'checked');
 				$(view.el).find("a").first().click(function() {
 					var url = $(view.el).find("input").first().val();
 					application.load(url, function(content) {
 						container_ace_editor.ace.setValue(content);
+						config.container_link = url;
+						if($(view.el).find("input[type=checkbox]").is(':checked'))
+							config.load_from_container_link = true;
+						else
+							config.load_from_container_link = false;
 						$("#container_link_modal").modal("hide");
 					});
 				});
@@ -401,10 +411,20 @@ function(application, $, Backbone, SidePanel, Editor, JSConsole, List, Operation
 					.parent().css("margin-left", 130);
 					$(view.el).find("label.checkbox").parent().css("margin-left", 130);
 					$(view.el).find("div.control-group").css("margin-bottom", 0);
+					if(typeof config.html_link !== "undefined")
+						$(view.el).find("input[type=text]").first().val(config.html_link);
+					if(config.load_from_html_link === true)
+						$(view.el).find("input[type=checkbox]").attr('checked', 'checked');
 					$(view.el).find("a").first().click(function() {
-						var url = $(view.el).find("input").first().val();
+						var url = $(view.el).find("input[type=text]").first().val();
 						application.load(url, function(content) {
+							console.log(JSON.stringify(url));
 							html_editor.ace.setValue(content);
+							config.html_link = url;
+							if($(view.el).find("input[type=checkbox]").is(':checked'))
+								config.load_from_html_link = true;
+							else
+								config.load_from_html_link = false;
 							$("#html_link_modal").modal("hide");
 						});
 					});
@@ -433,10 +453,19 @@ function(application, $, Backbone, SidePanel, Editor, JSConsole, List, Operation
 					.parent().css("margin-left", 130);
 					$(view.el).find("label.checkbox").parent().css("margin-left", 130);
 					$(view.el).find("div.control-group").css("margin-bottom", 0);
+					if(typeof config.javascript_link !== "undefined")
+						$(view.el).find("input[type=text]").first().val(config.html_link);
+					if(config.load_from_javascript_link === true)
+						$(view.el).find("input[type=checkbox]").attr('checked', 'checked');
 					$(view.el).find("a").first().click(function() {
 						var url = $(view.el).find("input").first().val();
 						application.load(url, function(content) {
 							javascript_editor.ace.setValue(content);
+							config.javascript_link = url;
+							if($(view.el).find("input[type=checkbox]").is(':checked'))
+								config.load_from_javascript_link = true;
+							else
+								config.load_from_javascript_link = false;
 							$("#javascript_link_modal").modal("hide");
 						});
 					});
@@ -465,10 +494,19 @@ function(application, $, Backbone, SidePanel, Editor, JSConsole, List, Operation
 					.parent().css("margin-left", 130);
 					$(view.el).find("label.checkbox").parent().css("margin-left", 130);
 					$(view.el).find("div.control-group").css("margin-bottom", 0);
+					if(typeof config.css_link !== "undefined")
+						$(view.el).find("input[type=text]").first().val(config.html_link);
+					if(config.load_from_css_link === true)
+						$(view.el).find("input[type=checkbox]").attr('checked', 'checked');
 					$(view.el).find("a").first().click(function() {
 						var url = $(view.el).find("input").first().val();
 						application.load(url, function(content) {
 							css_editor.ace.setValue(content);
+							config.css_link = url;
+							if($(view.el).find("input[type=checkbox]").is(':checked'))
+								config.load_from_css_link = true;
+							else
+								config.load_from_css_link = false;
 							$("#css_link_modal").modal("hide");
 						});
 					});
@@ -577,8 +615,7 @@ function(application, $, Backbone, SidePanel, Editor, JSConsole, List, Operation
 						
 						
 						
-						// new widget infor
-						
+						// new widget modal
 						var modal_data = {
 								id: "new_widget_modal",
 								title: "New Widget", 
@@ -587,7 +624,7 @@ function(application, $, Backbone, SidePanel, Editor, JSConsole, List, Operation
 								         ],
 								action: "Create"
 						};
-						var modal = new Modal.View({
+						var new_widget_modal = new Modal.View({
 							el: $("#new_widget_modal_container"),
 							model: new Modal.Model({
 								modal: modal_data
@@ -595,12 +632,12 @@ function(application, $, Backbone, SidePanel, Editor, JSConsole, List, Operation
 						});
 						
 						
-						modal.render(function(view){
+						new_widget_modal.render(function(view){
 							
 							$(view.el).find("a").click(function(){
 								
 								var creator_name = "servicebus";
-								var widget_name = $(modal.el).find('input[type="text"]').first().val();
+								var widget_name = $(view.el).find('input[type="text"]').first().val();
 								
 								var files = JSON.stringify({
 									html: html_editor.ace.getValue(),
@@ -615,7 +652,7 @@ function(application, $, Backbone, SidePanel, Editor, JSConsole, List, Operation
 								widget.set("widget_name", widget_name);
 								widget.set("files", files);
 								widget.set("service_name", service_name);
-								widget.set("configurations", Configuration);
+								widget.set("configurations", config);
 								
 								widget.save(function() {
 									jsconsole.logging("saved", "success");
@@ -641,6 +678,7 @@ function(application, $, Backbone, SidePanel, Editor, JSConsole, List, Operation
 					        	});
 								
 								widget.set("files", files);
+								widget.set("configurations", config);
 								
 								widget.save(function() {
 									jsconsole.logging("saved", "success");

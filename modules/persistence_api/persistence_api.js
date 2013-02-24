@@ -1,5 +1,6 @@
 define([
-        
+	"application",
+	
 	// Libs
 	"jquery",
 	"use!backbone",
@@ -9,7 +10,7 @@ define([
 	"rest"
 ],
 
-function($, Backbone, Github, Rest) {
+function(application, $, Backbone, Github, Rest) {
 	
 	var Persistence = {};
 	
@@ -37,16 +38,12 @@ function($, Backbone, Github, Rest) {
 			var options = {
 				success: function(model, response) {
 					console.log('saved');
-					console.log(model);
-					console.log(response);
 					if(_.isFunction(done)) {
 						done(model);
 					};
 				},
 				error: function(model, response) {
 					console.log('error');
-					console.log(model);
-					console.log(response);
 					if(_.isFunction(done)) {
 						done(model);
 					};
@@ -64,7 +61,68 @@ function($, Backbone, Github, Rest) {
 			
 			var options = {
 				success: function(){
-	    			if(_.isFunction(done)){
+					
+					var config = widget.get("configurations");
+					var files =  widget.get("files");
+					
+					var count = 0;
+					
+					if(config.load_from_html_link === true && typeof config.html_link !== "undefined") {
+						count++;
+					}
+					if(config.load_from_javascript_link === true && typeof config.javascript_link !== "undefined") {
+						count++;
+					}
+					if(config.load_from_css_link === true && typeof config.css_link !== "undefined") {
+						count++;
+					}
+					if(config.load_from_container_link === true && typeof config.container_link !== "undefined") {
+						count++;
+					}
+					
+					if(config.load_from_html_link === true && typeof config.html_link !== "undefined") {
+						application.load(config.html_link, function(content) {
+							files.html = content;
+							count--;
+							if(count === 0 && _.isFunction(done)){
+								widget.set("files", files);
+			    				done(widget);
+			    			}
+						});
+					}
+					
+					if(config.load_from_javascript_link === true && typeof config.javascript_link !== "undefined") {
+						application.load(config.javascript_link, function(content) {
+							files.javascript = content;
+							count--
+							if(count === 0 && _.isFunction(done)){
+								widget.set("files", files);
+			    				done(widget);
+			    			}
+						});
+					}
+					if(config.load_from_css_link === true && typeof config.css_link !== "undefined") {
+						application.load(config.css_link, function(content) {
+							files.css = content;
+							count--;
+							if(count === 0 && _.isFunction(done)){
+								widget.set("files", files);
+			    				done(widget);
+			    			}
+						});
+					}
+					if(config.load_from_container_link === true && typeof config.container_link !== "undefined") {
+						application.load(config.container_link, function(content) {
+							files.container = content;
+							count--;
+							if(count === 0 && _.isFunction(done)){
+								widget.set("files", files);
+			    				done(widget);
+			    			}
+						});
+					}
+					
+	    			if(count === 0 && _.isFunction(done)){
 	    				done(widget);
 	    			}
 	    		},
