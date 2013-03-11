@@ -1,3 +1,12 @@
+/**
+ * 
+ * This is the module for reference link component.
+ * <p>
+ * e.g. Bootstrap link
+ * 
+ * @author Steven Zhang
+ * @version 1.0 February 24, 2013.
+ */
 define([
 	"application",
 

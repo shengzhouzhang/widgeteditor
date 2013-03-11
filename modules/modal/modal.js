@@ -1,3 +1,10 @@
+/**
+ * 
+ * This is the module for pop out window.
+ * 
+ * @author Steven Zhang
+ * @version 1.0 February 24, 2013.
+ */
 define([
 	"application",
 

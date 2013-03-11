@@ -1,3 +1,10 @@
+/**
+ * 
+ * This deployment of components and main execution file.
+ * 
+ * @author Steven Zhang
+ * @version 1.0 February 24, 2013.
+ */
 require([
 	"application",
 
@@ -37,7 +44,9 @@ function(application, $, Backbone, SidePanel, Editor, JSConsole, List, Operation
 	$("#main_container").css("margin-left", 10);
 	$("#main_container").css("margin-right", 10);
 	
-	var serview_list_panel = new SidePanel.View({
+	
+	// Create the panel of service list
+	var service_list_panel = new SidePanel.View({
 		el: $("#serive_list_container"),
 		model: new SidePanel.Model({
 			title: "Services",
@@ -49,6 +58,7 @@ function(application, $, Backbone, SidePanel, Editor, JSConsole, List, Operation
 		})
 	});
 	
+	// Create the panel of widget list
 	var widget_list_panel = new SidePanel.View({
 		el: $("#widget_list_container"),
 		model: new SidePanel.Model({
@@ -61,6 +71,7 @@ function(application, $, Backbone, SidePanel, Editor, JSConsole, List, Operation
 		})
 	});
 	
+	// Create the panel of widget's codes
 	var widget_code_panel = new SidePanel.View({
 		el: $("#widget_code_container"),
 		model: new SidePanel.Model({
@@ -73,6 +84,7 @@ function(application, $, Backbone, SidePanel, Editor, JSConsole, List, Operation
 		})
 	});
 	
+	// Create the panel of widget's preview
 	var widget_preivew_panel = new SidePanel.View({
 		el: $("#widget_preview_container"),
 		model: new SidePanel.Model({
@@ -85,6 +97,7 @@ function(application, $, Backbone, SidePanel, Editor, JSConsole, List, Operation
 		})
 	});
 	
+	// the data of service list
 	var service_list = [
 	    {name: "eBay", target: "ebay"},
         {name: "Facebook", target: "facebook"}, 
@@ -95,13 +108,16 @@ function(application, $, Backbone, SidePanel, Editor, JSConsole, List, Operation
         {name: "Others", target: "others"}
 	];
 	
-	serview_list_panel.render(function(view){
+	// deploy service panel to web page.
+	service_list_panel.render(function(view){
 		
+		// create a list component for service list
 		var services = new List.View({
 			el: $(view.el).find("div.content").first(),
 			collection: new List.Collection(service_list)
 		});
 		
+		// deploy the list component of services
 		services.render(function(view){
 			
 			//click event of service list
@@ -646,7 +662,7 @@ function(application, $, Backbone, SidePanel, Editor, JSConsole, List, Operation
 					    			container: container_ace_editor.ace.getValue(),
 					        	});
 								
-								var service_name = $(serview_list_panel.el).find("a.actived").first().attr("target");
+								var service_name = $(service_list_panel.el).find("a.actived").first().attr("target");
 								
 								widget.set("creator_name", creator_name);
 								widget.set("widget_name", widget_name);

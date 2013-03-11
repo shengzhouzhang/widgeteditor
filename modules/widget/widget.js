@@ -1,3 +1,10 @@
+/**
+ * 
+ * This is the module for widget object.
+ * 
+ * @author Steven Zhang
+ * @version 1.0 February 24, 2013.
+ */
 define([
 	"application",
 

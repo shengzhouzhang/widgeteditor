@@ -1,3 +1,10 @@
+/**
+ * 
+ * This is the module for Github API.
+ * 
+ * @author Steven Zhang
+ * @version 1.0 February 24, 2013.
+ */
 define([
     "application",
 	"base64",

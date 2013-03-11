@@ -1,3 +1,12 @@
+/**
+ * 
+ * This is the module for operations component
+ * <p>
+ * e.g. New, HTML, JavaScript, CSS, Save, Preview, Container, and Run.
+ * 
+ * @author Steven Zhang
+ * @version 1.0 February 24, 2013.
+ */
 define([
 	"application",
 

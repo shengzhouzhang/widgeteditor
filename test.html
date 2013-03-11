@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+</head>
+<body>
+<a>TEST</a>
+<script>
+$('a').click(function() {
+	data = {create_name: "servicebus", widget_name: "servicebus"};
+	$.ajax({
+        url: "http://crowdbase.cse.unsw.edu.au:8080/widgetservice/widgets/",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(data),
+        dataType: "json",
+        success: function(content) {	
+        	console.log("success");
+			console.log(content);
+        },
+        error: function(content) {
+			console.log("error");
+			console.log(content);
+        }
+	});
+})
+</script>
+</body>
+</html>

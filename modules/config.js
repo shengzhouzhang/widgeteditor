@@ -1,11 +1,16 @@
-// Set the require.js configuration for your application.
+/**
+ * 
+ * This configuration file for require.js
+ * 
+ * @author Steven Zhang
+ * @version 1.0 February 24, 2013.
+ */
 require.config({
   // Initialize the application with the main application file
   deps: ["main"],
 
   paths: {
-
-//	application: "application",
+	  
     // Libraries
     jquery: "../libs/jquery",
     underscore: "../libs/underscore-min",

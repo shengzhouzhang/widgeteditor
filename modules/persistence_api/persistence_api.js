@@ -1,3 +1,12 @@
+/**
+ * 
+ * This is the module for persistence API
+ * <p>
+ * e.g. saving, fetching of widgets or widget list
+ * 
+ * @author Steven Zhang
+ * @version 1.0 February 24, 2013.
+ */
 define([
 	"application",
 	
@@ -20,11 +29,14 @@ function(application, $, Backbone, Github, Rest) {
 		this.save = function(widget, done) {
 			
 			var url = null;
+			var method = null;
 			
 			if(widget.isNew()) {
 				url = Rest.base_uri;
+				method = "POST";
 			}else {
 				url = Rest.base_uri + widget.get("creator_name") + "/" + widget.get("widget_name");
+				method = "PUT";
 			};
 			
 			var attrs = {
@@ -51,8 +63,17 @@ function(application, $, Backbone, Github, Rest) {
 	    		url: url
 			};
 			
-			Backbone.Model.prototype.save.call(widget, attrs, options);
+//			Backbone.Model.prototype.save.call(widget, attrs, options);
 			
+			application.save(url, method, widget.toJSON(), function(content) {
+				if(typeof content.id !== undefined) {
+					widget.id = content.id;
+					console.log(content.id);
+					options.success(widget, null);
+				}else {
+					options.error(widget, null);
+				}
+			});
 		};
 		
 		this.fetch = function(widget, done) {

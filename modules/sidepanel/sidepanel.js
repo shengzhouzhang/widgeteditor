@@ -1,3 +1,12 @@
+/**
+ * 
+ * This is the module for layout component.
+ * <p>
+ * e.g. Services, Widgets, Codes, and Preview.
+ * 
+ * @author Steven Zhang
+ * @version 1.0 February 24, 2013.
+ */
 define([
 	"application",
 
